@@ -37,6 +37,12 @@ section {
     @apply flex flex-col justify-center items-center;
   }
 }
+@media (max-width: 768px) {
+  .glow {
+    display: none;
+  }
+}
+
 
 @layer components {
   .padding-x {

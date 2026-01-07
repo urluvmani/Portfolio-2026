@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import { gsap } from "gsap";
+import { useRef, memo } from "react";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
@@ -7,84 +7,81 @@ gsap.registerPlugin(ScrollTrigger);
 
 const AppShowcase = () => {
   const sectionRef = useRef(null);
-  const rydeRef = useRef(null);
-  const libraryRef = useRef(null);
-  const ycDirectoryRef = useRef(null);
 
-  useGSAP(() => {
-    // Animation for the main section
-    gsap.fromTo(
-      sectionRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 1.5 }
-    );
+  useGSAP(
+    () => {
+      const cards = gsap.utils.toArray(".project-card");
 
-    // Animations for each app showcase
-    const cards = [rydeRef.current, libraryRef.current, ycDirectoryRef.current];
-
-    cards.forEach((card, index) => {
-      gsap.fromTo(
-        card,
-        {
-          y: 50,
-          opacity: 0,
+      gsap.from(cards, {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          once: true,
         },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          delay: 0.3 * (index + 1),
-          scrollTrigger: {
-            trigger: card,
-            start: "top bottom-=100",
-          },
-        }
-      );
-    });
-  }, []);
+      });
+    },
+    { scope: sectionRef, dependencies: [] }
+  );
 
   return (
-    <div id="work" ref={sectionRef} className="app-showcase">
+    <section id="work" ref={sectionRef} className="app-showcase">
       <div className="w-full">
         <div className="showcaselayout">
-          <div ref={rydeRef} className="first-project-wrapper">
+          <div className="first-project-wrapper project-card">
             <div className="image-wrapper">
-              <img src="/images/project1.png" alt="Ecommerce App" />
+              <img
+                src="/images/project1.png"
+                alt="Ecommerce App"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
             <div className="text-content">
               <h2>
-                Fully functional luxury e-commerce application with a
-                premium, modern UI focused on performance.
+                Fully functional luxury e-commerce application with a premium,
+                modern UI focused on performance.
               </h2>
               <p className="text-white-50 md:text-xl">
-                An app built with React Native, Expo, & TailwindCSS for a fast,
+                An app built with React Native, Expo & TailwindCSS for a fast,
                 user-friendly experience.
               </p>
             </div>
           </div>
 
           <div className="project-list-wrapper overflow-hidden">
-            <div className="project" ref={libraryRef}>
+            <div className="project project-card">
               <div className="image-wrapper bg-[#FFEFDB]">
                 <img
                   src="/images/project2.png"
                   alt="Discipline Maker Application"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <h2>The Discipline Maker Application</h2>
             </div>
 
-            <div className="project" ref={ycDirectoryRef}>
+            <div className="project project-card">
               <div className="image-wrapper bg-[#FFE7EB]">
-                <img src="/images/project3.png" alt="YC Directory App" />
+                <img
+                  src="/images/project3.png"
+                  alt="YC Directory App"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
-              <h2>Linktree-All your links at one place.</h2>
+              <h2>Linktree — All your links at one place.</h2>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default AppShowcase;
+export default memo(AppShowcase);

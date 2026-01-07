@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { testimonials } from "../constants";
 import TitleHeader from "../components/TitleHeader";
 import GlowCard from "../components/GlowCard";
@@ -11,16 +12,22 @@ const Testimonials = () => {
           sub="⭐️ Customer feedback highlights"
         />
 
-        <div className="lg:columns-3 md:columns-2 columns-1 mt-16">
-          {testimonials.map((testimonial, index) => (
-            <GlowCard card={testimonial} key={index} index={index}>
+        <div className="lg:columns-3 md:columns-2 columns-1 mt-16 gap-6">
+          {testimonials.map((t) => (
+            <GlowCard key={t.name} card={t}>
               <div className="flex items-center gap-3">
+                <img
+                  src={t.imgPath}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  width={48}
+                  height={48}
+                  className="rounded-full"
+                />
                 <div>
-                  <img src={testimonial.imgPath} alt="" />
-                </div>
-                <div>
-                  <p className="font-bold">{testimonial.name}</p>
-                  <p className="text-white-50">{testimonial.mentions}</p>
+                  <p className="font-bold">{t.name}</p>
+                  <p className="text-white-50">{t.mentions}</p>
                 </div>
               </div>
             </GlowCard>
@@ -31,4 +38,4 @@ const Testimonials = () => {
   );
 };
 
-export default Testimonials;
+export default memo(Testimonials);
